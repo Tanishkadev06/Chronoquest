@@ -19,7 +19,30 @@ export interface QuizQuestion {
   explanation: string;
 }
 
+export interface WhatIfChoice {
+  id: string;
+  text: string;
+  consequence: string;
+  impactDelta: {
+    stability: number;
+    growth: number;
+    humanImpact: number;
+  };
+}
+
+export interface WhatIfDecisionPoint {
+  id: string;
+  narrative: string;
+  choices: WhatIfChoice[];
+}
+
 export interface WhatIfScenario {
+  title: string;
+  year: string;
+  description: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  intro: string;
+  decisions: WhatIfDecisionPoint[];
   realHistory: string;
   yourTimeline: string;
   impact: {
@@ -32,6 +55,7 @@ export interface WhatIfScenario {
     midTerm: string;
     longTerm: string;
   };
+  xpReward: number;
 }
 
 export interface Lesson {

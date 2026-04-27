@@ -1,9 +1,10 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, GitBranch, Trophy, User } from 'lucide-react';
+import { Home, BookOpen, GitBranch, Trophy, User } from 'lucide-react';
 
 const navItems = [
   { path: '/dashboard', icon: Home, label: 'Home' },
-  { path: '/skill-tree', icon: GitBranch, label: 'Skills' },
+  { path: '/skill-tree', icon: BookOpen, label: 'Lessons' },
+  { path: '/what-if', icon: GitBranch, label: 'What If' },
   { path: '/leaderboard', icon: Trophy, label: 'Ranks' },
   { path: '/profile', icon: User, label: 'Profile' },
 ];
@@ -20,12 +21,12 @@ export default function NavBar() {
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-amber-500/[0.03] to-transparent pointer-events-none" />
           <div className="flex items-center justify-around relative">
             {navItems.map(({ path, icon: Icon, label }) => {
-              const active = pathname === path;
+              const active = pathname === path || (path === '/what-if' && pathname.startsWith('/what-if'));
               return (
                 <button
                   key={path}
                   onClick={() => navigate(path)}
-                  className={`relative flex flex-col items-center gap-1 px-5 py-2 rounded-2xl transition-all duration-300 ${
+                  className={`relative flex flex-col items-center gap-1 px-3 py-2 rounded-2xl transition-all duration-300 ${
                     active ? 'text-amber-400' : 'text-white/25 hover:text-white/45'
                   }`}
                 >
