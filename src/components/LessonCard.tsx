@@ -29,26 +29,26 @@ export default function LessonCard({ lesson, progress, userLevel, onClick }: Les
   return (
     <div
       onClick={!locked ? onClick : undefined}
-      className={`relative rounded-3xl overflow-hidden transition-all duration-400 card-lift ${
+      className={`relative rounded-3xl overflow-hidden transition-all duration-300 card-lift card-shadow ${
         locked
           ? 'opacity-50 cursor-not-allowed saturate-50'
           : 'cursor-pointer'
       }`}
     >
       {/* Image header */}
-      <div className="relative h-40 overflow-hidden">
+      <div className="relative h-44 overflow-hidden">
         <img
           src={lesson.imageUrl}
           alt={lesson.title}
           className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
         />
         <div className={`absolute inset-0 bg-gradient-to-b ${categoryColors[lesson.category]} mix-blend-multiply opacity-70`} />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#06060b] via-[#06060b]/50 to-transparent" />
 
         {/* Completed badge */}
         {completed && (
           <div className="absolute top-3 right-3 animate-bounce-in">
-            <div className="bg-emerald-500 rounded-full p-1.5 shadow-lg shadow-emerald-500/40">
+            <div className="bg-emerald-500 rounded-full p-2 shadow-lg shadow-emerald-500/50">
               <Star size={14} fill="white" className="text-white" />
             </div>
           </div>
@@ -58,8 +58,8 @@ export default function LessonCard({ lesson, progress, userLevel, onClick }: Les
         {locked && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm">
             <div className="flex flex-col items-center gap-2 animate-fade-in">
-              <div className="w-12 h-12 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center">
-                <Lock size={20} className="text-white/40" />
+              <div className="w-14 h-14 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center">
+                <Lock size={22} className="text-white/40" />
               </div>
               <span className="text-[11px] text-white/40 font-semibold">Level {lesson.requiredLevel}</span>
             </div>
@@ -68,14 +68,14 @@ export default function LessonCard({ lesson, progress, userLevel, onClick }: Les
 
         {/* Category badge */}
         <div className="absolute bottom-3 left-3">
-          <span className={`text-[10px] font-bold uppercase tracking-[0.15em] px-2.5 py-1 rounded-full border ${categoryBadge[lesson.category]}`}>
+          <span className={`text-[10px] font-bold uppercase tracking-[0.15em] px-3 py-1.5 rounded-full border ${categoryBadge[lesson.category]}`}>
             {lesson.category}
           </span>
         </div>
       </div>
 
       {/* Content */}
-      <div className="bg-[#0f0f18] border-t border-white/[0.04] p-5">
+      <div className="bg-[#0a0a12] border-t border-white/[0.04] p-5">
         <div className="flex items-start justify-between gap-3 mb-2">
           <h3 className="font-bold text-white text-[15px] leading-snug">{lesson.title}</h3>
           <span className="text-[11px] text-white/25 font-medium shrink-0 mt-0.5">{lesson.era}</span>
@@ -96,8 +96,8 @@ export default function LessonCard({ lesson, progress, userLevel, onClick }: Les
                   <Star
                     key={i}
                     size={9}
-                    className={i < (progress?.score ?? 0) ? 'text-amber-400' : 'text-white/10'}
-                    fill={i < (progress?.score ?? 0) ? 'currentColor' : 'none'}
+                    className={i < Math.min(progress?.score ?? 0, 5) ? 'text-amber-400' : 'text-white/10'}
+                    fill={i < Math.min(progress?.score ?? 0, 5) ? 'currentColor' : 'none'}
                   />
                 ))}
               </div>

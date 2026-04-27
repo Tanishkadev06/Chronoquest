@@ -34,7 +34,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] pb-28 max-w-md mx-auto">
+    <div className="min-h-screen bg-[#06060b] pb-28 max-w-md mx-auto">
       {/* Profile hero */}
       <div className="relative overflow-hidden px-5 pt-14 pb-8 border-b border-white/[0.04]">
         <div className="absolute top-0 left-0 w-48 h-48 bg-blue-500/[0.04] rounded-full blur-3xl -translate-x-1/2 -translate-y-1/3" />
@@ -46,7 +46,7 @@ export default function Profile() {
             <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-2xl font-black text-black shadow-2xl shadow-amber-500/30">
               {initials}
             </div>
-            <div className="absolute -bottom-1.5 -right-1.5 bg-[#0a0a0f] rounded-full p-1 border border-white/10">
+            <div className="absolute -bottom-1.5 -right-1.5 bg-[#06060b] rounded-full p-1 border border-white/10">
               <div className="bg-amber-500 text-black text-[9px] font-black w-6 h-6 rounded-full flex items-center justify-center">
                 {level}
               </div>
@@ -74,7 +74,7 @@ export default function Profile() {
             { icon: Target, label: 'Avg. Score', value: `${avgScore}/5`, color: 'text-emerald-400', bg: 'from-emerald-500/10 to-emerald-500/5', border: 'border-emerald-500/15' },
             { icon: Award, label: 'Level Progress', value: `${Math.round(percentage)}%`, color: 'text-orange-400', bg: 'from-orange-500/10 to-orange-500/5', border: 'border-orange-500/15' },
           ].map(({ icon: Icon, label, value, color, bg, border }) => (
-            <div key={label} className={`relative overflow-hidden bg-gradient-to-br ${bg} border ${border} rounded-2xl p-4`}>
+            <div key={label} className={`relative overflow-hidden bg-gradient-to-br ${bg} border ${border} rounded-2xl p-4 card-shadow`}>
               <Icon size={18} className={`${color} mb-2.5`} />
               <div className={`text-[20px] font-black ${color} tabular-nums leading-none`}>{value}</div>
               <div className="text-[10px] text-white/25 mt-1.5 font-semibold uppercase tracking-wider">{label}</div>
@@ -93,7 +93,7 @@ export default function Profile() {
                   <div
                     key={lesson.id}
                     onClick={() => navigate(`/lesson/${lesson.id}`)}
-                    className="flex items-center gap-3.5 p-3.5 glass rounded-2xl cursor-pointer card-lift"
+                    className="flex items-center gap-3.5 p-3.5 glass rounded-2xl cursor-pointer card-lift card-shadow"
                   >
                     <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-white/[0.06]">
                       <img src={lesson.imageUrl} alt="" className="w-full h-full object-cover" />

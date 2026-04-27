@@ -4,10 +4,11 @@ import { Clock, Zap, ChevronLeft, CheckCircle2, XCircle, Timer } from 'lucide-re
 import { dailyChallenge } from '../data/lessons';
 import { useGameStore } from '../store/gameStore';
 import XPToast from '../components/XPToast';
+import LevelUpCelebration from '../components/LevelUpCelebration';
 
 export default function DailyChallenge() {
   const navigate = useNavigate();
-  const { completeDailyChallenge, dailyChallengeCompleted, dailyChallengeDate } = useGameStore();
+  const { completeDailyChallenge, dailyChallengeCompleted, dailyChallengeDate, pendingLevelUp, clearLevelUp } = useGameStore();
   const [selected, setSelected] = useState<number | null>(null);
   const [confirmed, setConfirmed] = useState(false);
   const [timeLeft, setTimeLeft] = useState(dailyChallenge.timeLimit);
@@ -62,11 +63,12 @@ export default function DailyChallenge() {
   const timerBarColor = timeLeft > 15 ? 'from-emerald-500 to-teal-400' : timeLeft > 8 ? 'from-amber-500 to-orange-400' : 'from-red-500 to-red-400';
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex flex-col max-w-md mx-auto">
+    <div className="min-h-screen bg-[#06060b] flex flex-col max-w-md mx-auto">
       {xpToast !== null && <XPToast amount={xpToast} onDone={handleXPDone} />}
+      {pendingLevelUp && <LevelUpCelebration level={pendingLevelUp} onDone={clearLevelUp} />}
 
       {/* Top */}
-      <div className="px-5 pt-12 pb-6 bg-gradient-to-br from-[#0f0f18] to-[#0a0a0f] border-b border-white/[0.04]">
+      <div className="px-5 pt-12 pb-6 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04]">
         <div className="flex items-center gap-3 mb-5">
           <button onClick={() => navigate('/dashboard')} className="text-white/30 hover:text-white/60 transition-colors p-1.5 rounded-xl hover:bg-white/[0.04]">
             <ChevronLeft size={22} />
@@ -94,7 +96,7 @@ export default function DailyChallenge() {
                 {String(timeLeft).padStart(2, '0')}s
               </span>
             </div>
-            <div className="h-3 bg-white/[0.06] rounded-full overflow-hidden">
+            <div className="h-3.5 bg-white/[0.06] rounded-full overflow-hidden">
               <div
                 className={`h-full bg-gradient-to-r ${timerBarColor} rounded-full transition-all duration-1000 ease-linear relative`}
                 style={{ width: `${confirmed || expired ? 0 : timerPercent}%` }}
@@ -158,7 +160,7 @@ export default function DailyChallenge() {
             </div>
 
             {/* Question */}
-            <div className="glass rounded-3xl p-6 mb-6 animate-fade-up">
+            <div className="glass rounded-3xl p-6 mb-6 animate-fade-up card-shadow">
               <div className="text-[10px] uppercase tracking-[0.15em] text-amber-400 font-bold mb-3 flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                 Today's Question
@@ -208,7 +210,7 @@ export default function DailyChallenge() {
 
             {/* Explanation */}
             {confirmed && (
-              <div className={`rounded-3xl p-5 mb-5 border animate-scale-in ${
+              <div className={`rounded-3xl p-5 mb-5 border animate-scale-in card-shadow ${
                 isCorrect ? 'bg-emerald-900/15 border-emerald-500/25' : 'bg-red-900/15 border-red-500/25'
               }`}>
                 <div className={`text-[11px] font-bold uppercase tracking-[0.15em] mb-2 ${isCorrect ? 'text-emerald-400' : 'text-red-400'}`}>

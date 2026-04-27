@@ -13,6 +13,7 @@ interface GameState {
   dailyChallengeCompleted: boolean;
   dailyChallengeDate: string | null;
   totalLessonsCompleted: number;
+  pendingLevelUp: number | null;
 
   setUserName: (name: string) => void;
   completeOnboarding: (name: string) => void;
@@ -21,6 +22,7 @@ interface GameState {
   completeDailyChallenge: () => void;
   updateStreak: () => void;
   resetProgress: () => void;
+  clearLevelUp: () => void;
 }
 
 function xpForLevel(level: number): number {
@@ -51,20 +53,27 @@ export const useGameStore = create<GameState>()(
       dailyChallengeCompleted: false,
       dailyChallengeDate: null,
       totalLessonsCompleted: 0,
+      pendingLevelUp: null,
 
       setUserName: (name) => set({ userName: name }),
 
       completeOnboarding: (name) => set({ userName: name, hasOnboarded: true }),
 
       addXP: (amount) => {
+        const oldLevel = get().level;
         const newXP = get().xp + amount;
         const newLevel = calcLevel(newXP);
-        set({ xp: newXP, level: newLevel });
+        set({
+          xp: newXP,
+          level: newLevel,
+          pendingLevelUp: newLevel > oldLevel ? newLevel : get().pendingLevelUp,
+        });
       },
 
       completeLesson: (lessonId, score, xpEarned) => {
         const existing = get().progress[lessonId];
         const wasCompleted = existing?.completed;
+        const oldLevel = get().level;
         const newXP = get().xp + xpEarned;
         const newLevel = calcLevel(newXP);
         const newTotal = wasCompleted ? get().totalLessonsCompleted : get().totalLessonsCompleted + 1;
@@ -73,6 +82,7 @@ export const useGameStore = create<GameState>()(
           xp: newXP,
           level: newLevel,
           totalLessonsCompleted: newTotal,
+          pendingLevelUp: newLevel > oldLevel ? newLevel : state.pendingLevelUp,
           progress: {
             ...state.progress,
             [lessonId]: {
@@ -107,6 +117,8 @@ export const useGameStore = create<GameState>()(
         });
       },
 
+      clearLevelUp: () => set({ pendingLevelUp: null }),
+
       resetProgress: () =>
         set({
           xp: 0,
@@ -117,6 +129,7 @@ export const useGameStore = create<GameState>()(
           dailyChallengeCompleted: false,
           dailyChallengeDate: null,
           totalLessonsCompleted: 0,
+          pendingLevelUp: null,
         }),
     }),
     { name: 'chronoquest-storage' }

@@ -1,9 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft, Zap, ChevronRight, CheckCircle2, BookOpen } from 'lucide-react';
+import { ChevronLeft, Zap, ChevronRight, CheckCircle2, BookOpen, GitBranch } from 'lucide-react';
 import { lessons } from '../data/lessons';
 import { useGameStore } from '../store/gameStore';
 import XPToast from '../components/XPToast';
+import LevelUpCelebration from '../components/LevelUpCelebration';
 import type { Choice } from '../types';
 
 export default function LessonPlayer() {
@@ -11,6 +12,8 @@ export default function LessonPlayer() {
   const navigate = useNavigate();
   const addXP = useGameStore((s) => s.addXP);
   const updateStreak = useGameStore((s) => s.updateStreak);
+  const pendingLevelUp = useGameStore((s) => s.pendingLevelUp);
+  const clearLevelUp = useGameStore((s) => s.clearLevelUp);
 
   const lesson = lessons.find((l) => l.id === id);
 
@@ -21,6 +24,7 @@ export default function LessonPlayer() {
   const [xpToast, setXpToast] = useState<number | null>(null);
   const [finished, setFinished] = useState(false);
   const [stepKey, setStepKey] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
 
   const handleXPDone = useCallback(() => setXpToast(null), []);
 
@@ -30,7 +34,7 @@ export default function LessonPlayer() {
 
   if (!lesson) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+      <div className="min-h-screen bg-[#06060b] flex items-center justify-center">
         <div className="text-white/40 text-center">
           <p className="text-lg font-bold mb-2">Lesson not found</p>
           <button onClick={() => navigate('/dashboard')} className="text-amber-400 underline">Go back</button>
@@ -58,29 +62,34 @@ export default function LessonPlayer() {
     updateStreak();
   }
 
-  function handleNext() {
+  function advanceStep() {
     setShowOutcome(false);
     setSelectedChoice(null);
-    if (stepIndex < totalSteps - 1) {
-      setStepIndex(stepIndex + 1);
-    } else {
-      setFinished(true);
-    }
+    setTransitioning(true);
+    setTimeout(() => {
+      if (stepIndex < totalSteps - 1) {
+        setStepIndex(stepIndex + 1);
+      } else {
+        setFinished(true);
+      }
+      setTransitioning(false);
+    }, 200);
+  }
+
+  function handleNext() {
+    advanceStep();
   }
 
   function handleSkipToNext() {
     updateStreak();
-    if (stepIndex < totalSteps - 1) {
-      setStepIndex(stepIndex + 1);
-    } else {
-      setFinished(true);
-    }
+    advanceStep();
   }
 
   if (finished) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex flex-col items-center justify-center px-6 max-w-md mx-auto">
+      <div className="min-h-screen bg-[#06060b] flex flex-col items-center justify-center px-6 max-w-md mx-auto">
         {xpToast !== null && <XPToast amount={xpToast} onDone={handleXPDone} />}
+        {pendingLevelUp && <LevelUpCelebration level={pendingLevelUp} onDone={clearLevelUp} />}
 
         <div className="w-full space-y-7 text-center">
           {/* Success icon */}
@@ -98,7 +107,7 @@ export default function LessonPlayer() {
 
           {/* Choices summary */}
           {Object.values(choicesMade).length > 0 && (
-            <div className="glass rounded-3xl p-5 space-y-3 text-left animate-fade-up stagger-2">
+            <div className="glass rounded-3xl p-5 space-y-3 text-left animate-fade-up stagger-2 card-shadow">
               <div className="text-[11px] text-white/30 uppercase tracking-[0.15em] font-bold mb-1">Your choices</div>
               {Object.values(choicesMade).map((c) => (
                 <div key={c.id} className="flex items-start gap-3 bg-white/[0.03] rounded-xl p-3">
@@ -124,6 +133,19 @@ export default function LessonPlayer() {
                 Start Quiz — +{lesson.xpReward} XP
               </span>
             </button>
+
+            {lesson.whatIf && (
+              <button
+                onClick={() => navigate(`/what-if/${lesson.id}`)}
+                className="btn-premium w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-extrabold py-4 rounded-2xl text-base shadow-2xl shadow-blue-500/20"
+              >
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  <GitBranch size={18} />
+                  What If? — Alternate Timeline
+                </span>
+              </button>
+            )}
+
             <button
               onClick={() => navigate('/dashboard')}
               className="w-full text-white/30 text-[13px] hover:text-white/50 transition-colors py-2 font-medium"
@@ -137,8 +159,9 @@ export default function LessonPlayer() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex flex-col max-w-md mx-auto">
+    <div className="min-h-screen bg-[#06060b] flex flex-col max-w-md mx-auto">
       {xpToast !== null && <XPToast amount={xpToast} onDone={handleXPDone} />}
+      {pendingLevelUp && <LevelUpCelebration level={pendingLevelUp} onDone={clearLevelUp} />}
 
       {/* Top bar */}
       <div className="px-5 pt-12 pb-4 flex items-center gap-3">
@@ -153,7 +176,7 @@ export default function LessonPlayer() {
             <span>{lesson.category}</span>
             <span>{stepIndex + 1} / {totalSteps}</span>
           </div>
-          <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden">
+          <div className="h-2.5 bg-white/[0.06] rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full transition-all duration-700 ease-out relative"
               style={{ width: `${progress}%` }}
@@ -164,8 +187,8 @@ export default function LessonPlayer() {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 flex flex-col px-5 py-3 overflow-y-auto pb-10" key={stepKey}>
+      {/* Content with transition */}
+      <div className={`flex-1 flex flex-col px-5 py-3 overflow-y-auto pb-10 transition-all duration-200 ${transitioning ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'}`} key={stepKey}>
         {/* Era badge */}
         <div className="mb-5 animate-fade-down">
           <span className="text-[10px] uppercase tracking-[0.15em] text-blue-400 font-bold bg-blue-500/10 border border-blue-500/15 px-3 py-1.5 rounded-full inline-flex items-center gap-1.5">
@@ -175,13 +198,13 @@ export default function LessonPlayer() {
         </div>
 
         {/* Story card */}
-        <div className="glass rounded-3xl p-6 mb-5 animate-fade-up">
-          <p className="text-white/85 text-[14px] leading-[1.9] font-light">{currentStep.text}</p>
+        <div className="glass rounded-3xl p-6 mb-5 animate-fade-up card-shadow">
+          <p className="text-white/85 text-[15px] leading-[1.9] font-light">{currentStep.text}</p>
         </div>
 
         {/* Outcome card */}
         {showOutcome && selectedChoice && (
-          <div className="bg-gradient-to-br from-amber-900/20 to-orange-900/10 border border-amber-500/25 rounded-3xl p-5 mb-5 animate-scale-in inner-glow-amber">
+          <div className="bg-gradient-to-br from-amber-900/20 to-orange-900/10 border border-amber-500/25 rounded-3xl p-5 mb-5 animate-scale-in inner-glow-amber card-shadow">
             <div className="flex items-center gap-2 mb-3">
               <div className="bg-amber-500/20 rounded-lg p-1.5">
                 <Zap size={13} className="text-amber-400" fill="currentColor" />
@@ -217,7 +240,7 @@ export default function LessonPlayer() {
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="text-[13px] text-white font-medium leading-relaxed">{choice.text}</p>
+                      <p className="text-[14px] text-white font-medium leading-relaxed">{choice.text}</p>
                       <div className="flex items-center gap-1.5 mt-2">
                         <div className="bg-amber-500/10 rounded px-1.5 py-0.5">
                           <span className="text-[10px] text-amber-400/60 font-bold">+{choice.xpGain} XP</span>

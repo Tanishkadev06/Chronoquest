@@ -6,10 +6,11 @@ import XPBar from '../components/XPBar';
 import StreakBadge from '../components/StreakBadge';
 import LessonCard from '../components/LessonCard';
 import NavBar from '../components/NavBar';
+import LevelUpCelebration from '../components/LevelUpCelebration';
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { userName, xp, level, streak, progress, dailyChallengeCompleted, dailyChallengeDate } = useGameStore();
+  const { userName, xp, level, streak, progress, dailyChallengeCompleted, dailyChallengeDate, pendingLevelUp, clearLevelUp } = useGameStore();
 
   const today = new Date().toDateString();
   const challengeDoneToday = dailyChallengeCompleted && dailyChallengeDate === today;
@@ -19,35 +20,49 @@ export default function Dashboard() {
   const completedCount = Object.values(progress).filter((p) => p.completed).length;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] pb-28 max-w-md mx-auto">
+    <div className="min-h-screen bg-[#06060b] pb-28 max-w-md mx-auto">
+      {pendingLevelUp && <LevelUpCelebration level={pendingLevelUp} onDone={clearLevelUp} />}
+
       {/* Hero header */}
-      <div className="relative overflow-hidden px-5 pt-14 pb-7">
-        <div className="absolute top-0 right-0 w-56 h-56 bg-amber-500/[0.04] rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-500/[0.03] rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
+      <div className="relative overflow-hidden px-5 pt-14 pb-8">
+        {/* Ambient glows */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/[0.05] rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/[0.04] rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-500/[0.02] rounded-full blur-3xl" />
 
         <div className="relative">
-          <div className="flex items-start justify-between mb-6 animate-fade-down">
+          {/* Greeting row */}
+          <div className="flex items-start justify-between mb-5 animate-fade-down">
             <div>
-              <p className="text-white/30 text-[11px] uppercase tracking-[0.2em] font-semibold mb-1.5">Welcome back</p>
-              <h1 className="text-[26px] font-black text-white tracking-tight">{userName || 'Historian'}</h1>
+              <p className="text-white/25 text-[11px] uppercase tracking-[0.2em] font-semibold mb-1">Welcome back</p>
+              <h1 className="text-[28px] font-black text-white tracking-tight">{userName || 'Historian'}</h1>
             </div>
             <div className="animate-bounce-in stagger-2">
               <StreakBadge streak={streak} />
             </div>
           </div>
 
-          <div className="animate-fade-up stagger-1">
+          {/* Hero tagline */}
+          <div className="mb-6 animate-fade-up stagger-1">
+            <p className="text-white/50 text-[15px] font-medium leading-relaxed">
+              History, but you <span className="text-amber-400 font-bold">live it</span>.
+            </p>
+            <p className="text-white/25 text-[12px] mt-1">Make decisions that shape the course of history.</p>
+          </div>
+
+          {/* XP Bar */}
+          <div className="animate-fade-up stagger-2">
             <XPBar xp={xp} level={level} />
           </div>
 
           {/* Stats row */}
-          <div className="grid grid-cols-3 gap-2.5 mt-6 animate-fade-up stagger-2">
+          <div className="grid grid-cols-3 gap-2.5 mt-5 animate-fade-up stagger-3">
             {[
               { label: 'Total XP', value: xp.toLocaleString(), icon: Zap, color: 'text-amber-400', bg: 'from-amber-500/10 to-amber-500/5', border: 'border-amber-500/15' },
               { label: 'Lessons', value: `${completedCount}/${allLessons.length}`, icon: BookOpen, color: 'text-blue-400', bg: 'from-blue-500/10 to-blue-500/5', border: 'border-blue-500/15' },
               { label: 'Streak', value: `${streak}`, icon: Flame, color: 'text-orange-400', bg: 'from-orange-500/10 to-orange-500/5', border: 'border-orange-500/15' },
             ].map(({ label, value, icon: Icon, color, bg, border }) => (
-              <div key={label} className={`relative overflow-hidden bg-gradient-to-br ${bg} border ${border} rounded-2xl p-3.5 text-center`}>
+              <div key={label} className={`relative overflow-hidden bg-gradient-to-br ${bg} border ${border} rounded-2xl p-3.5 text-center card-shadow`}>
                 <Icon size={15} className={`${color} mx-auto mb-1.5`} fill="currentColor" />
                 <div className={`text-[17px] font-black ${color} tabular-nums leading-none`}>{value}</div>
                 <div className="text-[9px] text-white/25 mt-1 font-semibold uppercase tracking-wider">{label}</div>
@@ -59,16 +74,16 @@ export default function Dashboard() {
 
       <div className="px-5 space-y-8">
         {/* Daily Challenge */}
-        <div className="animate-fade-up stagger-3">
+        <div className="animate-fade-up stagger-4">
           <div
             onClick={() => !challengeDoneToday && navigate('/daily-challenge')}
-            className={`relative overflow-hidden rounded-3xl border transition-all duration-400 card-lift ${
+            className={`relative overflow-hidden rounded-3xl border transition-all duration-300 card-lift card-shadow ${
               challengeDoneToday
                 ? 'border-emerald-500/15 bg-gradient-to-br from-emerald-900/10 to-emerald-900/5 cursor-default'
                 : 'border-amber-500/20 bg-gradient-to-br from-amber-900/15 to-orange-900/5 cursor-pointer'
             }`}
           >
-            <div className="absolute top-0 right-0 w-28 h-28 bg-amber-500/[0.06] rounded-full blur-2xl" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/[0.06] rounded-full blur-2xl" />
             <div className="relative p-5 flex items-center gap-4">
               <div className={`rounded-2xl p-3.5 transition-all duration-300 ${
                 challengeDoneToday ? 'bg-emerald-500/15' : 'bg-amber-500/15 animate-pulse-glow'
@@ -99,11 +114,11 @@ export default function Dashboard() {
 
         {/* Continue Learning */}
         {nextLesson && (
-          <div className="animate-fade-up stagger-4">
+          <div className="animate-fade-up stagger-5">
             <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/25 mb-3">Continue Learning</h2>
             <div
               onClick={() => navigate(`/lesson/${nextLesson.id}`)}
-              className="relative overflow-hidden rounded-3xl border border-blue-500/15 bg-gradient-to-br from-blue-900/15 to-cyan-900/5 p-5 flex items-center gap-4 cursor-pointer card-lift"
+              className="relative overflow-hidden rounded-3xl border border-blue-500/15 bg-gradient-to-br from-blue-900/15 to-cyan-900/5 p-5 flex items-center gap-4 cursor-pointer card-lift card-shadow"
             >
               <div className="absolute inset-0">
                 <img src={nextLesson.imageUrl} alt="" className="w-full h-full object-cover opacity-[0.06]" />
@@ -127,7 +142,7 @@ export default function Dashboard() {
         )}
 
         {/* All Lessons */}
-        <div className="animate-fade-up stagger-5">
+        <div className="animate-fade-up stagger-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/25">All Lessons</h2>
             <button

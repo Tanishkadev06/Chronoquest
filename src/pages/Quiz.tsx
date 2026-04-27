@@ -5,6 +5,7 @@ import { lessons } from '../data/lessons';
 import { useGameStore } from '../store/gameStore';
 import XPToast from '../components/XPToast';
 import XPBar from '../components/XPBar';
+import LevelUpCelebration from '../components/LevelUpCelebration';
 import type { Lesson } from '../types';
 
 export default function Quiz() {
@@ -15,7 +16,7 @@ export default function Quiz() {
 
   if (!lesson) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+      <div className="min-h-screen bg-[#06060b] flex items-center justify-center">
         <button onClick={() => navigate('/dashboard')} className="text-amber-400">Go back</button>
       </div>
     );
@@ -26,7 +27,7 @@ export default function Quiz() {
 
 function QuizInner({ lesson }: { lesson: Lesson }) {
   const navigate = useNavigate();
-  const { xp, level, completeLesson } = useGameStore();
+  const { xp, level, completeLesson, pendingLevelUp, clearLevelUp } = useGameStore();
 
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -71,7 +72,6 @@ function QuizInner({ lesson }: { lesson: Lesson }) {
       setSelected(null);
       setConfirmed(false);
     } else {
-      // All answers collected (current answer already added in handleConfirm)
       const allAnswers = [...answers];
       const score = allAnswers.filter(Boolean).length;
       const xpEarned = Math.round(lesson.xpReward * (score / totalQuestions));
@@ -88,8 +88,9 @@ function QuizInner({ lesson }: { lesson: Lesson }) {
     const passed = finalScore >= Math.ceil(totalQuestions / 2);
 
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex flex-col items-center justify-center px-6 max-w-md mx-auto">
+      <div className="min-h-screen bg-[#06060b] flex flex-col items-center justify-center px-6 max-w-md mx-auto">
         {xpToast !== null && <XPToast amount={xpToast} onDone={handleXPDone} />}
+        {pendingLevelUp && <LevelUpCelebration level={pendingLevelUp} onDone={clearLevelUp} />}
 
         <div className="w-full space-y-7 text-center">
           {/* Score ring */}
@@ -118,7 +119,7 @@ function QuizInner({ lesson }: { lesson: Lesson }) {
           </div>
 
           {/* Stats card */}
-          <div className="glass rounded-3xl p-5 space-y-4 animate-fade-up stagger-2">
+          <div className="glass rounded-3xl p-5 space-y-4 animate-fade-up stagger-2 card-shadow">
             <div className="flex justify-between items-center">
               <span className="text-[13px] text-white/40">XP Earned</span>
               <span className="text-amber-400 font-extrabold text-[15px] flex items-center gap-1.5">
@@ -167,7 +168,7 @@ function QuizInner({ lesson }: { lesson: Lesson }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex flex-col max-w-md mx-auto">
+    <div className="min-h-screen bg-[#06060b] flex flex-col max-w-md mx-auto">
       {xpToast !== null && <XPToast amount={xpToast} onDone={handleXPDone} />}
 
       {/* Top bar */}
@@ -180,7 +181,7 @@ function QuizInner({ lesson }: { lesson: Lesson }) {
             <span>Quiz — {lesson.title}</span>
             <span>{current + 1} / {totalQuestions}</span>
           </div>
-          <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden">
+          <div className="h-2.5 bg-white/[0.06] rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-700 ease-out relative"
               style={{ width: `${progressPct}%` }}
@@ -193,7 +194,7 @@ function QuizInner({ lesson }: { lesson: Lesson }) {
 
       <div className="flex-1 flex flex-col px-5 py-3 pb-10" key={questionKey}>
         {/* Question */}
-        <div className="glass rounded-3xl p-6 mb-6 animate-fade-up">
+        <div className="glass rounded-3xl p-6 mb-6 animate-fade-up card-shadow">
           <div className="text-[10px] uppercase tracking-[0.15em] text-emerald-400 font-bold mb-3 flex items-center gap-1.5">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             Question {current + 1}
@@ -243,7 +244,7 @@ function QuizInner({ lesson }: { lesson: Lesson }) {
 
         {/* Explanation */}
         {confirmed && (
-          <div className={`rounded-3xl p-5 mb-5 border animate-scale-in ${
+          <div className={`rounded-3xl p-5 mb-5 border animate-scale-in card-shadow ${
             isCorrect ? 'bg-emerald-900/15 border-emerald-500/25' : 'bg-red-900/15 border-red-500/25'
           }`}>
             <div className={`text-[11px] font-bold uppercase tracking-[0.15em] mb-2 ${isCorrect ? 'text-emerald-400' : 'text-red-400'}`}>

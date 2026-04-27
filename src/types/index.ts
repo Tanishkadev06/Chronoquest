@@ -19,6 +19,21 @@ export interface QuizQuestion {
   explanation: string;
 }
 
+export interface WhatIfScenario {
+  realHistory: string;
+  yourTimeline: string;
+  impact: {
+    stability: number;
+    growth: number;
+    humanImpact: number;
+  };
+  effects: {
+    immediate: string;
+    midTerm: string;
+    longTerm: string;
+  };
+}
+
 export interface Lesson {
   id: string;
   title: string;
@@ -30,6 +45,7 @@ export interface Lesson {
   quiz: QuizQuestion[];
   requiredLevel: number;
   imageUrl: string;
+  whatIf?: WhatIfScenario;
 }
 
 export interface UserProgress {

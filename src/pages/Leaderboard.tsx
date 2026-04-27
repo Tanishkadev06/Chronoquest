@@ -26,7 +26,6 @@ export default function Leaderboard() {
   const top3 = fullBoard.slice(0, Math.min(3, fullBoard.length));
   const rest = fullBoard.slice(3);
 
-  // Podium order: 2nd, 1st, 3rd (left to right)
   const podiumSlots = [top3[1] ?? null, top3[0] ?? null, top3[2] ?? null];
 
   const podiumStyles: Record<number, { height: string; color: string; bg: string; border: string; medal: string }> = {
@@ -36,9 +35,10 @@ export default function Leaderboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] pb-28 max-w-md mx-auto">
+    <div className="min-h-screen bg-[#06060b] pb-28 max-w-md mx-auto">
       {/* Header */}
-      <div className="px-5 pt-14 pb-6 bg-gradient-to-br from-[#0f0f18] to-[#0a0a0f] border-b border-white/[0.04]">
+      <div className="relative overflow-hidden px-5 pt-14 pb-6 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04]">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/[0.04] rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
         <div className="flex items-center gap-2.5 mb-1">
           <Trophy size={22} className="text-amber-400" fill="currentColor" />
           <h1 className="text-[24px] font-black text-white tracking-tight">Leaderboard</h1>
@@ -61,7 +61,6 @@ export default function Leaderboard() {
                   <Crown size={22} className="text-amber-400 mb-0.5 animate-float" fill="currentColor" />
                 )}
 
-                {/* Avatar */}
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-sm font-black border-2 transition-all ${
                   entry.isCurrentUser
                     ? 'bg-blue-500/25 border-blue-500/50 text-blue-300 shadow-lg shadow-blue-500/20'
@@ -70,7 +69,6 @@ export default function Leaderboard() {
                   {entry.avatar}
                 </div>
 
-                {/* Name & XP */}
                 <div className="text-center">
                   <div className={`text-[11px] font-bold truncate w-20 text-center ${entry.isCurrentUser ? 'text-blue-300' : 'text-white/80'}`}>
                     {entry.name}
@@ -81,7 +79,6 @@ export default function Leaderboard() {
                   </div>
                 </div>
 
-                {/* Podium block */}
                 <div className={`flex-1 w-full rounded-t-2xl border ${style.bg} ${style.border} flex items-start justify-center pt-3 animate-podium-rise`}>
                   <span className={style.medal}>
                     {rank === 1 ? '\u{1F947}' : rank === 2 ? '\u{1F948}' : '\u{1F949}'}
@@ -97,9 +94,9 @@ export default function Leaderboard() {
           {rest.map((entry, idx) => (
             <div
               key={entry.rank}
-              className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all duration-300 card-lift animate-fade-up stagger-${Math.min(idx + 4, 6)} ${
+              className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all duration-300 card-lift animate-fade-up stagger-${Math.min(idx + 4, 8)} card-shadow ${
                 entry.isCurrentUser
-                  ? 'border-blue-500/20 bg-blue-900/[0.06]'
+                  ? 'border-blue-500/20 bg-blue-900/[0.08]'
                   : 'border-white/[0.05] bg-white/[0.01]'
               }`}
             >

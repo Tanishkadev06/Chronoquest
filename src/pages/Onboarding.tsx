@@ -65,8 +65,11 @@ export default function Onboarding() {
 
   if (nameStep) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex flex-col items-center justify-center px-6">
-        <div className="w-full max-w-sm space-y-8">
+      <div className="min-h-screen bg-[#06060b] flex flex-col items-center justify-center px-6">
+        {/* Background glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/[0.04] rounded-full blur-3xl" />
+
+        <div className="w-full max-w-sm space-y-8 relative">
           {/* Logo */}
           <div className="text-center space-y-4 animate-fade-up">
             <div className="relative inline-block">
@@ -119,8 +122,11 @@ export default function Onboarding() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex flex-col">
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-[#06060b] flex flex-col">
+      {/* Background glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-80 h-80 bg-amber-500/[0.03] rounded-full blur-3xl" />
+
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative">
         <div className="w-full max-w-sm space-y-10">
           {/* Logo */}
           <div className="text-center animate-fade-down">
@@ -130,7 +136,7 @@ export default function Onboarding() {
           </div>
 
           {/* Slide card */}
-          <div className={`relative rounded-3xl bg-gradient-to-br ${current.gradient} border border-white/[0.06] p-8 flex flex-col items-center gap-6 transition-all duration-500 ${animating ? 'animate-scale-in' : ''}`}>
+          <div className={`relative rounded-3xl bg-gradient-to-br ${current.gradient} border border-white/[0.06] p-8 flex flex-col items-center gap-6 transition-all duration-500 card-shadow ${animating ? 'animate-scale-in' : ''}`}>
             {/* Glow */}
             <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 ${current.glow} opacity-[0.08] blur-3xl rounded-full`} />
 
@@ -168,7 +174,7 @@ export default function Onboarding() {
               { icon: Zap, label: 'Earn XP', sub: 'Level system' },
               { icon: Trophy, label: 'Compete', sub: 'Leaderboards' },
             ].map(({ icon: Icon, label, sub }) => (
-              <div key={label} className="glass rounded-2xl p-3 text-center">
+              <div key={label} className="glass rounded-2xl p-3 text-center card-shadow">
                 <Icon size={16} className="text-amber-400 mx-auto mb-1.5" />
                 <div className="text-[11px] font-bold text-white">{label}</div>
                 <div className="text-[9px] text-white/30 mt-0.5">{sub}</div>

@@ -8,6 +8,7 @@ import SkillTree from './pages/SkillTree';
 import Leaderboard from './pages/Leaderboard';
 import Profile from './pages/Profile';
 import DailyChallenge from './pages/DailyChallenge';
+import WhatIfMode from './pages/WhatIfMode';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const hasOnboarded = useGameStore((s) => s.hasOnboarded);
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/lesson/:id" element={<ProtectedRoute><LessonPlayer /></ProtectedRoute>} />
         <Route path="/quiz/:id" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
+        <Route path="/what-if/:id" element={<ProtectedRoute><WhatIfMode /></ProtectedRoute>} />
         <Route path="/skill-tree" element={<ProtectedRoute><SkillTree /></ProtectedRoute>} />
         <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
