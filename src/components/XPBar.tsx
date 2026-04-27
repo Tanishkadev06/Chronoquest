@@ -29,7 +29,7 @@ export default function XPBar({ xp, level, compact = false }: XPBarProps) {
   return (
     <div className="space-y-2.5">
       <div className="flex justify-between items-baseline">
-        <span className="text-sm font-extrabold text-amber-400 tracking-wide">Level {level}</span>
+        <span className="text-sm font-extrabold gradient-text-amber tracking-wide">Level {level}</span>
         <span className="text-[11px] text-white/35 font-medium tabular-nums">{current} / {required} XP</span>
       </div>
       <div className="relative h-5 bg-white/[0.06] rounded-full overflow-hidden">

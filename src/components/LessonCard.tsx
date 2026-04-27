@@ -1,4 +1,4 @@
-import { Lock, Star, Zap, Clock } from 'lucide-react';
+import { Lock, Star, Zap, Clock, GitBranch } from 'lucide-react';
 import type { Lesson, UserProgress } from '../types';
 
 interface LessonCardProps {
@@ -29,7 +29,7 @@ export default function LessonCard({ lesson, progress, userLevel, onClick }: Les
   return (
     <div
       onClick={!locked ? onClick : undefined}
-      className={`relative rounded-3xl overflow-hidden transition-all duration-300 card-lift card-shadow ${
+      className={`relative rounded-3xl overflow-hidden transition-all duration-300 card-lift card-shadow group ${
         locked
           ? 'opacity-50 cursor-not-allowed saturate-50'
           : 'cursor-pointer'
@@ -40,7 +40,7 @@ export default function LessonCard({ lesson, progress, userLevel, onClick }: Les
         <img
           src={lesson.imageUrl}
           alt={lesson.title}
-          className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className={`absolute inset-0 bg-gradient-to-b ${categoryColors[lesson.category]} mix-blend-multiply opacity-70`} />
         <div className="absolute inset-0 bg-gradient-to-t from-[#06060b] via-[#06060b]/50 to-transparent" />
@@ -51,6 +51,16 @@ export default function LessonCard({ lesson, progress, userLevel, onClick }: Les
             <div className="bg-emerald-500 rounded-full p-2 shadow-lg shadow-emerald-500/50">
               <Star size={14} fill="white" className="text-white" />
             </div>
+          </div>
+        )}
+
+        {/* What If badge */}
+        {lesson.whatIf && !locked && (
+          <div className="absolute top-3 left-3">
+            <span className="text-[9px] font-bold uppercase tracking-wider text-blue-400 bg-blue-500/20 border border-blue-500/25 px-2 py-1 rounded-full flex items-center gap-1">
+              <GitBranch size={8} />
+              What If
+            </span>
           </div>
         )}
 

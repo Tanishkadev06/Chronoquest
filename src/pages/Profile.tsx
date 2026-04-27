@@ -36,7 +36,7 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-[#06060b] pb-28 max-w-md mx-auto">
       {/* Profile hero */}
-      <div className="relative overflow-hidden px-5 pt-14 pb-8 border-b border-white/[0.04]">
+      <div className="relative overflow-hidden px-5 pt-14 pb-8 border-b border-white/[0.04] noise-overlay">
         <div className="absolute top-0 left-0 w-48 h-48 bg-blue-500/[0.04] rounded-full blur-3xl -translate-x-1/2 -translate-y-1/3" />
         <div className="absolute bottom-0 right-0 w-48 h-48 bg-amber-500/[0.04] rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
 

@@ -88,11 +88,11 @@ function QuizInner({ lesson }: { lesson: Lesson }) {
     const passed = finalScore >= Math.ceil(totalQuestions / 2);
 
     return (
-      <div className="min-h-screen bg-[#06060b] flex flex-col items-center justify-center px-6 max-w-md mx-auto">
+      <div className="min-h-screen bg-[#06060b] flex flex-col items-center justify-center px-6 max-w-md mx-auto noise-overlay">
         {xpToast !== null && <XPToast amount={xpToast} onDone={handleXPDone} />}
         {pendingLevelUp && <LevelUpCelebration level={pendingLevelUp} onDone={clearLevelUp} />}
 
-        <div className="w-full space-y-7 text-center">
+        <div className="w-full space-y-7 text-center relative z-10">
           {/* Score ring */}
           <div className="relative mx-auto w-32 h-32 animate-bounce-in">
             <div className={`absolute inset-0 blur-3xl rounded-full scale-150 ${

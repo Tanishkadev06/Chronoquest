@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { GitBranch, ChevronRight, Shield, TrendingUp, Heart, Lock } from 'lucide-react';
+import { GitBranch, ChevronRight, Shield, TrendingUp, Heart, Lock, Sparkles } from 'lucide-react';
 import { lessons } from '../data/lessons';
 import { useGameStore } from '../store/gameStore';
 import NavBar from '../components/NavBar';
 
-const difficultyColors: Record<string, { bg: string; text: string; border: string }> = {
-  Easy: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20' },
-  Medium: { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/20' },
-  Hard: { bg: 'bg-red-500/10', text: 'text-red-400', border: 'border-red-500/20' },
+const difficultyColors: Record<string, { bg: string; text: string; border: string; glow: string }> = {
+  Easy: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20', glow: 'from-emerald-500/10' },
+  Medium: { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/20', glow: 'from-amber-500/10' },
+  Hard: { bg: 'bg-red-500/10', text: 'text-red-400', border: 'border-red-500/20', glow: 'from-red-500/10' },
 };
 
 export default function WhatIfIndex() {
@@ -19,14 +19,14 @@ export default function WhatIfIndex() {
   return (
     <div className="min-h-screen bg-[#06060b] pb-28 max-w-md mx-auto">
       {/* Hero header */}
-      <div className="relative overflow-hidden px-5 pt-14 pb-8 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04]">
+      <div className="relative overflow-hidden px-5 pt-14 pb-8 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04] noise-overlay">
         <div className="absolute top-0 right-0 w-56 h-56 bg-blue-500/[0.06] rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-40 h-40 bg-amber-500/[0.04] rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-cyan-500/[0.03] rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-40 h-40 bg-cyan-500/[0.04] rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-blue-500/[0.03] rounded-full blur-3xl animate-glow-pulse" />
 
-        <div className="relative">
+        <div className="relative z-10">
           <div className="flex items-center gap-3 mb-3 animate-fade-down">
-            <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl p-2 border border-blue-500/15">
+            <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl p-2.5 border border-blue-500/15 animate-border-glow">
               <GitBranch size={22} className="text-blue-400" />
             </div>
             <div>
@@ -35,9 +35,21 @@ export default function WhatIfIndex() {
             </div>
           </div>
 
-          <p className="text-white/40 text-[13px] leading-relaxed animate-fade-up stagger-1">
+          <p className="text-white/40 text-[13px] leading-relaxed animate-fade-up stagger-1 mb-4">
             Explore alternate timelines. Make decisions that change the course of history. Every choice reshapes the world.
           </p>
+
+          {/* Quick stats */}
+          <div className="flex items-center gap-3 animate-fade-up stagger-2">
+            <div className="glass-blue rounded-xl px-3 py-2 flex items-center gap-2">
+              <Sparkles size={12} className="text-blue-400" />
+              <span className="text-[10px] text-blue-400 font-bold">{scenarios.length} scenarios</span>
+            </div>
+            <div className="glass-amber rounded-xl px-3 py-2 flex items-center gap-2">
+              <Shield size={12} className="text-amber-400" />
+              <span className="text-[10px] text-amber-400 font-bold">3 difficulty levels</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -58,13 +70,18 @@ export default function WhatIfIndex() {
               key={lesson.id}
               onClick={() => !locked && navigate(`/what-if/${lesson.id}`)}
               disabled={locked}
-              className={`w-full text-left rounded-3xl border transition-all duration-300 card-lift animate-fade-up stagger-${Math.min(idx + 1, 6)} ${
+              className={`w-full text-left rounded-3xl border transition-all duration-300 card-lift animate-fade-up stagger-${Math.min(idx + 1, 6)} group relative overflow-hidden ${
                 locked
                   ? 'border-white/[0.04] bg-white/[0.01] opacity-50 cursor-not-allowed'
                   : 'border-white/[0.06] bg-white/[0.02] hover:border-blue-500/25 hover:bg-white/[0.04]'
               }`}
             >
-              <div className="p-5">
+              {/* Background glow on hover */}
+              {!locked && (
+                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${diff.glow} to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+              )}
+
+              <div className="relative z-10 p-5">
                 {/* Top row: year + difficulty */}
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400/70 bg-blue-500/10 px-2.5 py-1 rounded-full border border-blue-500/15">
@@ -110,7 +127,7 @@ export default function WhatIfIndex() {
                   {locked ? (
                     <span className="text-[10px] text-white/25 font-semibold">Level {lesson.requiredLevel} required</span>
                   ) : (
-                    <div className="flex items-center gap-1 text-blue-400">
+                    <div className="flex items-center gap-1 text-blue-400 group-hover:text-cyan-400 transition-colors">
                       <span className="text-[11px] font-bold">Explore</span>
                       <ChevronRight size={14} strokeWidth={3} />
                     </div>

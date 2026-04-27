@@ -87,7 +87,7 @@ export default function LessonPlayer() {
 
   if (finished) {
     return (
-      <div className="min-h-screen bg-[#06060b] flex flex-col items-center justify-center px-6 max-w-md mx-auto">
+      <div className="min-h-screen bg-[#06060b] flex flex-col items-center justify-center px-6 max-w-md mx-auto noise-overlay">
         {xpToast !== null && <XPToast amount={xpToast} onDone={handleXPDone} />}
         {pendingLevelUp && <LevelUpCelebration level={pendingLevelUp} onDone={clearLevelUp} />}
 

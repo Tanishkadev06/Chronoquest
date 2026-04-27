@@ -37,13 +37,15 @@ export default function Leaderboard() {
   return (
     <div className="min-h-screen bg-[#06060b] pb-28 max-w-md mx-auto">
       {/* Header */}
-      <div className="relative overflow-hidden px-5 pt-14 pb-6 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04]">
+      <div className="relative overflow-hidden px-5 pt-14 pb-6 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04] noise-overlay">
         <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/[0.04] rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
-        <div className="flex items-center gap-2.5 mb-1">
-          <Trophy size={22} className="text-amber-400" fill="currentColor" />
-          <h1 className="text-[24px] font-black text-white tracking-tight">Leaderboard</h1>
+        <div className="relative z-10">
+          <div className="flex items-center gap-2.5 mb-1">
+            <Trophy size={22} className="text-amber-400" fill="currentColor" />
+            <h1 className="text-[24px] font-black text-white tracking-tight">Leaderboard</h1>
+          </div>
+          <p className="text-white/30 text-[13px]">Top historians of ChronoQuest</p>
         </div>
-        <p className="text-white/30 text-[13px]">Top historians of ChronoQuest</p>
       </div>
 
       {/* Podium */}

@@ -124,26 +124,26 @@ export default function WhatIfMode() {
         </div>
 
         {/* Cinematic intro */}
-        <div className={`px-5 py-8 flex flex-col items-center text-center transition-all duration-700 ${fadeIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <div className={`px-5 py-6 flex flex-col items-center text-center transition-all duration-700 ${fadeIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           {/* Year badge */}
-          <div className="animate-fade-down mb-6">
+          <div className="animate-fade-down mb-5">
             <span className="text-[12px] font-bold uppercase tracking-[0.25em] text-blue-400/80 bg-blue-500/10 border border-blue-500/15 px-4 py-2 rounded-full">
               {wi.year}
             </span>
           </div>
 
           {/* Title */}
-          <h1 className="text-[28px] font-black text-white tracking-tight mb-3 animate-fade-up stagger-1 leading-tight">
+          <h1 className="text-[28px] font-black text-white tracking-tight mb-2 animate-fade-up stagger-1 leading-tight">
             {wi.title}
           </h1>
 
           {/* Description */}
-          <p className="text-white/40 text-[13px] leading-relaxed mb-8 max-w-xs animate-fade-up stagger-2">
+          <p className="text-white/40 text-[13px] leading-relaxed mb-7 max-w-xs animate-fade-up stagger-2">
             {wi.description}
           </p>
 
           {/* Narrative intro card */}
-          <div className="w-full glass rounded-3xl p-6 card-shadow mb-8 animate-fade-up stagger-3">
+          <div className="w-full glass-blue rounded-3xl p-6 card-shadow mb-6 animate-fade-up stagger-3">
             <div className="flex items-center gap-2 mb-4">
               <div className="bg-blue-500/15 rounded-lg p-1.5">
                 <GitBranch size={14} className="text-blue-400" />
@@ -154,7 +154,7 @@ export default function WhatIfMode() {
           </div>
 
           {/* Starting impact */}
-          <div className="w-full glass rounded-3xl p-5 card-shadow mb-8 animate-fade-up stagger-4">
+          <div className="w-full glass rounded-3xl p-5 card-shadow mb-7 animate-fade-up stagger-4">
             <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/25 mb-4">Starting Conditions</div>
             <div className="space-y-4">
               {impactBars.map(({ label, value, icon: Icon, color, bg }) => (
@@ -169,7 +169,7 @@ export default function WhatIfMode() {
                     <span className="text-[11px] text-white/30 font-bold tabular-nums">{value}%</span>
                   </div>
                   <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden">
-                    <div className={`h-full bg-gradient-to-r ${color} rounded-full`} style={{ width: `${value}%` }} />
+                    <div className={`h-full bg-gradient-to-r ${color} rounded-full transition-all duration-700`} style={{ width: `${value}%` }} />
                   </div>
                 </div>
               ))}
@@ -412,11 +412,11 @@ export default function WhatIfMode() {
       {pendingLevelUp && <LevelUpCelebration level={pendingLevelUp} onDone={clearLevelUp} />}
 
       {/* Header */}
-      <div className="relative overflow-hidden px-5 pt-14 pb-6 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04]">
+      <div className="relative overflow-hidden px-5 pt-14 pb-6 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04] noise-overlay">
         <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/[0.06] rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-amber-500/[0.04] rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
 
-        <div className="relative">
+        <div className="relative z-10">
           <button
             onClick={() => navigate('/what-if')}
             className="text-white/30 hover:text-white/60 transition-colors p-1.5 rounded-xl hover:bg-white/[0.04] mb-4"
@@ -439,8 +439,8 @@ export default function WhatIfMode() {
         {choicesMade.length > 0 && (
           <div className="animate-fade-up stagger-1">
             <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/25 mb-4">Your Decisions</h2>
-            <div className="glass rounded-3xl p-5 space-y-3 card-shadow">
-              {choicesMade.map((c, idx) => (
+            <div className="glass-blue rounded-3xl p-5 space-y-3 card-shadow">
+              {choicesMade.map((c) => (
                 <div key={c.id} className="flex items-start gap-3 bg-white/[0.03] rounded-xl p-3">
                   <div className="bg-blue-500/15 rounded-lg p-1.5 mt-0.5 shrink-0">
                     <GitBranch size={12} className="text-blue-400" />
@@ -459,14 +459,14 @@ export default function WhatIfMode() {
         <div className="animate-fade-up stagger-2">
           <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/25 mb-4">Timeline Comparison</h2>
           <div className="grid grid-cols-2 gap-3">
-            <div className="glass rounded-3xl p-4 card-shadow border-t-2 border-t-amber-500/30">
+            <div className="glass-amber rounded-3xl p-4 card-shadow border-t-2 border-t-amber-500/30">
               <div className="flex items-center gap-1.5 mb-3">
                 <div className="w-2 h-2 rounded-full bg-amber-500" />
                 <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">Real History</span>
               </div>
               <p className="text-[12px] text-white/60 leading-relaxed">{wi.realHistory}</p>
             </div>
-            <div className="glass rounded-3xl p-4 card-shadow border-t-2 border-t-blue-500/30">
+            <div className="glass-blue rounded-3xl p-4 card-shadow border-t-2 border-t-blue-500/30">
               <div className="flex items-center gap-1.5 mb-3">
                 <div className="w-2 h-2 rounded-full bg-blue-500" />
                 <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400">Your Timeline</span>
@@ -524,7 +524,7 @@ export default function WhatIfMode() {
         </div>
 
         {/* XP reward */}
-        <div className="glass rounded-3xl p-5 card-shadow animate-fade-up stagger-5">
+        <div className="glass-amber rounded-3xl p-5 card-shadow animate-fade-up stagger-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="bg-amber-500/15 rounded-lg p-1.5">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Clock, Zap, Trophy, ChevronRight, Sparkles } from 'lucide-react';
+import { Clock, Zap, Trophy, ChevronRight, Sparkles, GitBranch } from 'lucide-react';
 import { useGameStore } from '../store/gameStore';
 
 const slides = [
@@ -11,6 +11,14 @@ const slides = [
     gradient: 'from-blue-600/20 via-cyan-600/10 to-transparent',
     accent: 'text-cyan-400',
     glow: 'bg-cyan-500',
+  },
+  {
+    icon: GitBranch,
+    title: 'Rewrite History',
+    subtitle: 'Explore alternate timelines. Every decision creates a new path through history.',
+    gradient: 'from-blue-600/20 via-indigo-600/10 to-transparent',
+    accent: 'text-blue-400',
+    glow: 'bg-blue-500',
   },
   {
     icon: Zap,
@@ -65,16 +73,17 @@ export default function Onboarding() {
 
   if (nameStep) {
     return (
-      <div className="min-h-screen bg-[#06060b] flex flex-col items-center justify-center px-6">
+      <div className="min-h-screen bg-[#06060b] flex flex-col items-center justify-center px-6 noise-overlay">
         {/* Background glow */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/[0.04] rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-500/[0.03] rounded-full blur-3xl" />
 
-        <div className="w-full max-w-sm space-y-8 relative">
+        <div className="w-full max-w-sm space-y-8 relative z-10">
           {/* Logo */}
           <div className="text-center space-y-4 animate-fade-up">
             <div className="relative inline-block">
               <div className="absolute inset-0 bg-amber-500/20 blur-3xl rounded-full scale-150" />
-              <div className="relative text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-amber-300 tracking-tight">
+              <div className="relative text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-amber-300 tracking-tight animate-hero-gradient" style={{ backgroundSize: '200% 200%' }}>
                 ChronoQuest
               </div>
             </div>
@@ -103,7 +112,7 @@ export default function Onboarding() {
               className="btn-premium w-full bg-gradient-to-r from-amber-500 to-orange-600 text-black font-extrabold py-4 rounded-2xl text-lg shadow-2xl shadow-amber-500/25 disabled:opacity-30 disabled:cursor-not-allowed disabled:shadow-none"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
-                Begin My Journey
+                Start Your Journey
                 <Sparkles size={18} />
               </span>
             </button>
@@ -122,11 +131,12 @@ export default function Onboarding() {
   }
 
   return (
-    <div className="min-h-screen bg-[#06060b] flex flex-col">
+    <div className="min-h-screen bg-[#06060b] flex flex-col noise-overlay">
       {/* Background glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-80 h-80 bg-amber-500/[0.03] rounded-full blur-3xl" />
+      <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-blue-500/[0.02] rounded-full blur-3xl" />
 
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative z-10">
         <div className="w-full max-w-sm space-y-10">
           {/* Logo */}
           <div className="text-center animate-fade-down">
@@ -156,7 +166,7 @@ export default function Onboarding() {
 
             {/* Dots */}
             <div className="flex gap-2 mt-1">
-              {[...Array(3)].map((_, i) => (
+              {[...Array(slides.length)].map((_, i) => (
                 <div
                   key={i}
                   className={`h-1.5 rounded-full transition-all duration-500 ${
@@ -171,7 +181,7 @@ export default function Onboarding() {
           <div className="grid grid-cols-3 gap-2.5 animate-fade-up stagger-3">
             {[
               { icon: Clock, label: '6 Lessons', sub: 'Across 4 eras' },
-              { icon: Zap, label: 'Earn XP', sub: 'Level system' },
+              { icon: GitBranch, label: 'What If', sub: '6 scenarios' },
               { icon: Trophy, label: 'Compete', sub: 'Leaderboards' },
             ].map(({ icon: Icon, label, sub }) => (
               <div key={label} className="glass rounded-2xl p-3 text-center card-shadow">

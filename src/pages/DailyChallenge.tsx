@@ -68,44 +68,46 @@ export default function DailyChallenge() {
       {pendingLevelUp && <LevelUpCelebration level={pendingLevelUp} onDone={clearLevelUp} />}
 
       {/* Top */}
-      <div className="px-5 pt-12 pb-6 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04]">
-        <div className="flex items-center gap-3 mb-5">
-          <button onClick={() => navigate('/dashboard')} className="text-white/30 hover:text-white/60 transition-colors p-1.5 rounded-xl hover:bg-white/[0.04]">
-            <ChevronLeft size={22} />
-          </button>
-          <div>
-            <h1 className="text-[18px] font-black text-white flex items-center gap-2">
-              <div className="bg-amber-500/15 rounded-lg p-1.5">
-                <Clock size={16} className="text-amber-400" />
-              </div>
-              Daily Challenge
-            </h1>
-            <p className="text-[12px] text-white/30 mt-0.5">{dailyChallenge.description}</p>
+      <div className="px-5 pt-12 pb-6 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04] noise-overlay">
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-5">
+            <button onClick={() => navigate('/dashboard')} className="text-white/30 hover:text-white/60 transition-colors p-1.5 rounded-xl hover:bg-white/[0.04]">
+              <ChevronLeft size={22} />
+            </button>
+            <div>
+              <h1 className="text-[18px] font-black text-white flex items-center gap-2">
+                <div className="bg-amber-500/15 rounded-lg p-1.5">
+                  <Clock size={16} className="text-amber-400" />
+                </div>
+                Daily Challenge
+              </h1>
+              <p className="text-[12px] text-white/30 mt-0.5">{dailyChallenge.description}</p>
+            </div>
           </div>
-        </div>
 
-        {/* Timer */}
-        {!alreadyDone && (
-          <div className="space-y-2.5">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-1.5 text-white/30">
-                <Timer size={13} />
-                <span className="text-[11px] font-semibold uppercase tracking-wider">Time remaining</span>
+          {/* Timer */}
+          {!alreadyDone && (
+            <div className="space-y-2.5">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-1.5 text-white/30">
+                  <Timer size={13} />
+                  <span className="text-[11px] font-semibold uppercase tracking-wider">Time remaining</span>
+                </div>
+                <span className={`text-[20px] font-black font-mono tabular-nums ${timerColor} transition-colors duration-300`}>
+                  {String(timeLeft).padStart(2, '0')}s
+                </span>
               </div>
-              <span className={`text-[20px] font-black font-mono tabular-nums ${timerColor} transition-colors duration-300`}>
-                {String(timeLeft).padStart(2, '0')}s
-              </span>
-            </div>
-            <div className="h-3.5 bg-white/[0.06] rounded-full overflow-hidden">
-              <div
-                className={`h-full bg-gradient-to-r ${timerBarColor} rounded-full transition-all duration-1000 ease-linear relative`}
-                style={{ width: `${confirmed || expired ? 0 : timerPercent}%` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+              <div className="h-3.5 bg-white/[0.06] rounded-full overflow-hidden">
+                <div
+                  className={`h-full bg-gradient-to-r ${timerBarColor} rounded-full transition-all duration-1000 ease-linear relative`}
+                  style={{ width: `${confirmed || expired ? 0 : timerPercent}%` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col px-5 py-6">

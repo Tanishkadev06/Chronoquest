@@ -4,7 +4,7 @@ import { Home, BookOpen, GitBranch, Trophy, User } from 'lucide-react';
 const navItems = [
   { path: '/dashboard', icon: Home, label: 'Home' },
   { path: '/skill-tree', icon: BookOpen, label: 'Lessons' },
-  { path: '/what-if', icon: GitBranch, label: 'What If' },
+  { path: '/what-if', icon: GitBranch, label: 'What If', highlight: true },
   { path: '/leaderboard', icon: Trophy, label: 'Ranks' },
   { path: '/profile', icon: User, label: 'Profile' },
 ];
@@ -20,24 +20,38 @@ export default function NavBar() {
           {/* Active indicator glow */}
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-amber-500/[0.03] to-transparent pointer-events-none" />
           <div className="flex items-center justify-around relative">
-            {navItems.map(({ path, icon: Icon, label }) => {
+            {navItems.map(({ path, icon: Icon, label, highlight }) => {
               const active = pathname === path || (path === '/what-if' && pathname.startsWith('/what-if'));
               return (
                 <button
                   key={path}
                   onClick={() => navigate(path)}
                   className={`relative flex flex-col items-center gap-1 px-3 py-2 rounded-2xl transition-all duration-300 ${
-                    active ? 'text-amber-400' : 'text-white/25 hover:text-white/45'
+                    active
+                      ? highlight
+                        ? 'text-blue-400'
+                        : 'text-amber-400'
+                      : 'text-white/25 hover:text-white/45'
                   }`}
                 >
                   {active && (
                     <>
-                      <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full" />
-                      <div className="absolute inset-0 bg-amber-500/[0.08] rounded-2xl" />
+                      <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-6 h-1 rounded-full ${
+                        highlight
+                          ? 'bg-gradient-to-r from-blue-400 to-cyan-500'
+                          : 'bg-gradient-to-r from-amber-400 to-orange-500'
+                      }`} />
+                      <div className={`absolute inset-0 rounded-2xl ${
+                        highlight ? 'bg-blue-500/[0.08]' : 'bg-amber-500/[0.08]'
+                      }`} />
                     </>
                   )}
                   <div className={`transition-all duration-300 ${active ? 'scale-115' : 'scale-100'}`}>
-                    <Icon size={22} fill={active ? 'currentColor' : 'none'} strokeWidth={active ? 2.5 : 1.5} />
+                    <Icon
+                      size={22}
+                      fill={active ? 'currentColor' : 'none'}
+                      strokeWidth={active ? 2.5 : 1.5}
+                    />
                   </div>
                   <span className={`text-[10px] font-bold tracking-wide transition-all duration-300 ${
                     active ? 'opacity-100' : 'opacity-50'

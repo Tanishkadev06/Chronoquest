@@ -48,20 +48,22 @@ export default function SkillTree() {
   return (
     <div className="min-h-screen bg-[#06060b] pb-28 max-w-md mx-auto">
       {/* Header */}
-      <div className="relative overflow-hidden px-5 pt-14 pb-6 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04]">
+      <div className="relative overflow-hidden px-5 pt-14 pb-6 bg-gradient-to-br from-[#0a0a18] to-[#06060b] border-b border-white/[0.04] noise-overlay">
         <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/[0.04] rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
-        <div className="flex items-center gap-2.5 mb-2">
-          <BookOpen size={20} className="text-amber-400" />
-          <h1 className="text-[24px] font-black text-white tracking-tight">Skill Tree</h1>
-        </div>
-        <p className="text-white/30 text-[13px] mb-4">{totalCompleted} of {totalLessons} lessons completed</p>
+        <div className="relative z-10">
+          <div className="flex items-center gap-2.5 mb-2">
+            <BookOpen size={20} className="text-amber-400" />
+            <h1 className="text-[24px] font-black text-white tracking-tight">Skill Tree</h1>
+          </div>
+          <p className="text-white/30 text-[13px] mb-4">{totalCompleted} of {totalLessons} lessons completed</p>
 
-        <div className="h-3 bg-white/[0.06] rounded-full overflow-hidden">
-          <div
-            className="h-full bg-gradient-to-r from-amber-400 via-orange-500 to-amber-400 rounded-full transition-all duration-1000 ease-out relative"
-            style={{ width: `${(totalCompleted / totalLessons) * 100}%` }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+          <div className="h-3 bg-white/[0.06] rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-amber-400 via-orange-500 to-amber-400 rounded-full transition-all duration-1000 ease-out relative"
+              style={{ width: `${(totalCompleted / totalLessons) * 100}%` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+            </div>
           </div>
         </div>
       </div>
