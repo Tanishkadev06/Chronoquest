@@ -79,21 +79,16 @@ Planning beforehand saves a lot of time
 
 🔮 Future improvements
 
-
 Add quizzes or challenges
-
 
 Improve UI/UX
 
-
 Expand historical content
-
 
 Add user progress tracking
 
 
-
-🧠 Final thought
+🧠 Final thought<br>
 I Know This is not perfect, But this is a first of many projects that I've built hands on, So Feedbacks are welcome!
 
 
