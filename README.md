@@ -5,7 +5,7 @@ ChronoQuest is basically my attempt to make history feel less boring and more li
 Instead of just reading facts, the idea is to explore events and timelines in a way that actually keeps you interested. I wanted to build something where learning doesn’t feel forced.
 
 💡 Why I made this <br>
-Honestly, history is usually taught in a very static way — just memorizing dates and events.
+Honestly, history is usually taught in a very static way  just memorizing dates and events.
 I didn’t like that approach, so I tried to create something more interactive and engaging.
 Also, this project is part of me getting serious about building real-world projects and improving my development skills.
 
